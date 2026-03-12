@@ -1,0 +1,14 @@
+**/.git
+**/.gitignore
+**/.vs
+**/.vscode
+**/.idea
+**/*.*proj.user
+**/*.dbmdl
+**/*.jfm
+**/bin
+**/obj
+**/out
+**/TestResults
+**/.kiro
+**/node_modules
