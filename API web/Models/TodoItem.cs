@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace API_web.Models;
 
@@ -10,8 +12,10 @@ public class TodoItem
     /// <summary>
     /// The unique identifier for the todo item
     /// </summary>
-    /// <example>1</example>
-    public long Id { get; set; }
+    /// <example>507f1f77bcf86cd799439011</example>
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
     /// <summary>
     /// The name or description of the todo item

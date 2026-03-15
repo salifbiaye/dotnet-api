@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>TodoItems API — Documentation</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; color: #1a1a2e; background: #fff; font-size: 13px; line-height: 1.6; }
+
+  .cover {
+    height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    align-items: center; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white; text-align: center; page-break-after: always;
+  }
+  .cover .badge { background: #e94560; color: white; padding: 6px 18px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px; }
+  .cover h1 { font-size: 52px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+  .cover h1 span { color: #e94560; }
+  .cover .subtitle { font-size: 18px; color: #a0aec0; margin-bottom: 40px; max-width: 480px; }
+  .cover .tech-stack { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
+  .cover .tech { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; }
+  .cover .meta { color: #718096; font-size: 13px; }
+  .cover .meta strong { color: #a0aec0; }
+
+  .page { padding: 48px 56px; max-width: 900px; margin: 0 auto; }
+
+  h2 { font-size: 24px; font-weight: 800; color: #1a1a2e; border-bottom: 3px solid #e94560; padding-bottom: 10px; margin: 36px 0 18px; }
+  h2:first-child { margin-top: 0; }
+  h3 { font-size: 15px; font-weight: 700; color: #0f3460; margin: 24px 0 10px; }
+  p { margin-bottom: 12px; color: #4a5568; }
+
+  .callout { border-left: 4px solid #e94560; background: #fff5f7; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; color: #2d3748; }
+  .callout.green { border-color: #38a169; background: #f0fff4; }
+  .callout.blue { border-color: #3182ce; background: #ebf8ff; }
+  .callout strong { display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #e94560; }
+  .callout.green strong { color: #38a169; }
+  .callout.blue strong { color: #3182ce; }
+
+  pre { background: #1a1a2e; color: #e2e8f0; padding: 16px 20px; border-radius: 8px; margin: 12px 0; font-family: 'Consolas', monospace; font-size: 12px; line-height: 1.7; white-space: pre-wrap; }
+  p code, li code, td code { background: #edf2f7; color: #e94560; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 12px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12.5px; }
+  thead tr { background: #1a1a2e; color: white; }
+  thead th { padding: 10px 14px; text-align: left; font-weight: 600; }
+  tbody tr:nth-child(even) { background: #f7fafc; }
+  td { padding: 9px 14px; border-bottom: 1px solid #e2e8f0; color: #2d3748; vertical-align: middle; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+  .tag-get { background: #c6f6d5; color: #276749; }
+  .tag-post { background: #bee3f8; color: #2a69ac; }
+  .tag-put { background: #fefcbf; color: #744210; }
+  .tag-delete { background: #fed7d7; color: #9b2c2c; }
+  .tag-none { background: #e2e8f0; color: #4a5568; }
+  .tag-admin { background: #fed7d7; color: #9b2c2c; }
+  .tag-user { background: #c6f6d5; color: #276749; }
+
+  .step { display: flex; gap: 16px; margin: 14px 0; align-items: flex-start; }
+  .step-num { min-width: 32px; height: 32px; background: #e94560; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+  .step-content { flex: 1; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px; background: #f7fafc; }
+  .card h4 { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 8px; }
+  .card p { font-size: 12px; color: #718096; margin: 0; }
+  .card .icon { font-size: 24px; margin-bottom: 8px; }
+
+  .role-box { border-radius: 10px; padding: 16px 20px; margin: 10px 0; }
+  .role-admin { background: linear-gradient(135deg, #fff5f5, #fed7d7); border: 1px solid #feb2b2; }
+  .role-user { background: linear-gradient(135deg, #f0fff4, #c6f6d5); border: 1px solid #9ae6b4; }
+
+  @media print {
+    body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .cover { page-break-after: always; }
+    pre, table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE DE COUVERTURE -->
+<div class="cover">
+  <div class="badge">Projet Academique</div>
+  <h1>TodoItems <span>API</span></h1>
+  <p class="subtitle">API REST securisee avec authentification JWT et autorisation par roles</p>
+  <div class="tech-stack">
+    <span class="tech">ASP.NET Core 9.0</span>
+    <span class="tech">JWT Auth</span>
+    <span class="tech">Swagger / OpenAPI</span>
+    <span class="tech">Docker</span>
+    <span class="tech">In-Memory DB</span>
+  </div>
+  <div class="meta"><strong>Documentation technique</strong><br>Mars 2026</div>
+</div>
+
+<!-- CONTENU -->
+<div class="page">
+
+<h2>Presentation du projet</h2>
+<p>TodoItems API est une API REST developpee avec <strong>ASP.NET Core 9.0</strong>. Elle permet la gestion de taches (todo items) avec authentification <strong>JWT</strong> et autorisation par roles (<code>admin</code> / <code>user</code>).</p>
+
+<div class="grid2">
+  <div class="card"><div class="icon">&#128274;</div><h4>Authentification JWT</h4><p>Inscription, connexion et tokens signes avec expiration configurable.</p></div>
+  <div class="card"><div class="icon">&#128101;</div><h4>Autorisation par roles</h4><p>Deux roles : <code>admin</code> (CRUD complet) et <code>user</code> (lecture seule).</p></div>
+  <div class="card"><div class="icon">&#128196;</div><h4>Swagger / OpenAPI</h4><p>Interface interactive pour tester tous les endpoints depuis le navigateur.</p></div>
+  <div class="card"><div class="icon">&#128051;</div><h4>Support Docker</h4><p>Build multi-stage optimise, Docker Compose inclus pour un deploiement rapide.</p></div>
+</div>
+
+<h2>Lancer le projet</h2>
+
+<h3>Option 1 &mdash; En local (le plus simple)</h3>
+<div class="callout green">
+  <strong>Aucune configuration requise</strong>
+  Le secret JWT de developpement est pre-configure dans <code>appsettings.Development.json</code>.
+  L'application fonctionne immediatement apres clonage.
+</div>
+
+<div class="step"><div class="step-num">1</div><div class="step-content"><strong>Cloner le depot</strong><pre>git clone &lt;url-du-repo&gt;</pre></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><strong>Lancer l'API</strong><pre>cd "API web"
+dotnet run</pre></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><strong>Ouvrir Swagger</strong><pre>http://localhost:5284/swagger</pre></div></div>
+
+<h3>Option 2 &mdash; Via Docker</h3>
+<div class="callout blue">
+  <strong>Seule etape manuelle</strong>
+  Creer le fichier <code>.env</code> depuis <code>.env.example</code> et y definir <code>JWT_SECRET_KEY</code>.
+</div>
+
+<div class="step"><div class="step-num">1</div><div class="step-content"><strong>Cloner le depot et creer le fichier d'environnement</strong><pre>git clone &lt;url-du-repo&gt;
+cp .env.example .env</pre></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><strong>Ouvrir <code>.env</code> et definir la cle secrete (min. 32 caracteres)</strong><pre>JWT_SECRET_KEY=mon-secret-securise-minimum-32-caracteres
+JWT_EXPIRATION_MINUTES=60
+ASPNETCORE_ENVIRONMENT=Development</pre></div></div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><strong>Lancer via Docker Compose</strong><pre>docker-compose up --build</pre></div></div>
+<div class="step"><div class="step-num">4</div><div class="step-content"><strong>Ouvrir Swagger</strong><pre>http://localhost:8080/swagger</pre></div></div>
+
+<h3>Recapitulatif des ports</h3>
+<table>
+  <thead><tr><th>Mode</th><th>HTTP</th><th>HTTPS</th><th>Swagger</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Local</strong></td><td><code>localhost:5284</code></td><td><code>localhost:7250</code></td><td><code>localhost:5284/swagger</code></td></tr>
+    <tr><td><strong>Docker</strong></td><td><code>localhost:8080</code></td><td><code>localhost:8081</code></td><td><code>localhost:8080/swagger</code></td></tr>
+  </tbody>
+</table>
+
+<h2>Variables d'environnement</h2>
+<p>Copier <code>.env.example</code> vers <code>.env</code> (requis pour Docker uniquement).</p>
+<table>
+  <thead><tr><th>Variable</th><th>Obligatoire</th><th>Defaut</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><code>JWT_SECRET_KEY</code></td><td><strong>Oui (Docker)</strong></td><td>Secret dev inclus en local</td><td>Cle de signature des tokens JWT (min. 32 caracteres)</td></tr>
+    <tr><td><code>JWT_EXPIRATION_MINUTES</code></td><td>Non</td><td>60</td><td>Duree de validite du token en minutes</td></tr>
+    <tr><td><code>ASPNETCORE_ENVIRONMENT</code></td><td>Non</td><td>Production</td><td>Environnement applicatif</td></tr>
+    <tr><td><code>CORS_ALLOWED_ORIGINS</code></td><td>Non</td><td>localhost:3000, 5173</td><td>Origines autorisees pour les requetes CORS</td></tr>
+    <tr><td><code>CONNECTION_STRING</code></td><td>Non</td><td>InMemory</td><td>Chaine de connexion base de donnees</td></tr>
+  </tbody>
+</table>
+
+<h2>Tester l'API (pas a pas via Swagger)</h2>
+
+<div class="step"><div class="step-num">1</div><div class="step-content">Ouvrir <code>http://localhost:5284/swagger</code></div></div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <strong>Creer un compte admin</strong> &mdash; <code>POST /api/auth/register</code> &rarr; Try it out
+    <pre>{
+  "username": "admin",
+  "password": "Test123!",
+  "role": "admin"
+}</pre>
+    Reponse attendue : <code>201 Created</code>
+  </div>
+</div>
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-content">
+    <strong>Se connecter</strong> &mdash; <code>POST /api/auth/login</code> &rarr; copier le champ <code>token</code> dans la reponse
+    <pre>{
+  "username": "admin",
+  "password": "Test123!"
+}</pre>
+  </div>
+</div>
+<div class="step"><div class="step-num">4</div><div class="step-content"><strong>S'authentifier</strong> &mdash; cliquer sur le bouton <strong>Authorize</strong> (icone cadenas en haut a droite), coller le token, valider</div></div>
+<div class="step"><div class="step-num">5</div><div class="step-content"><strong>Tester les endpoints</strong> &mdash; GET, POST, PUT, DELETE tous disponibles selon le role</div></div>
+
+<h2>Reference API</h2>
+
+<h3>Authentification (sans token)</h3>
+<table>
+  <thead><tr><th>Methode</th><th>Endpoint</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><span class="tag tag-post">POST</span></td><td><code>/api/auth/register</code></td><td>Creer un compte utilisateur</td></tr>
+    <tr><td><span class="tag tag-post">POST</span></td><td><code>/api/auth/login</code></td><td>Se connecter et obtenir un token JWT</td></tr>
+  </tbody>
+</table>
+
+<h3>Todo Items (token requis)</h3>
+<table>
+  <thead><tr><th>Methode</th><th>Endpoint</th><th>Description</th><th>Role requis</th></tr></thead>
+  <tbody>
+    <tr><td><span class="tag tag-get">GET</span></td><td><code>/api/todoitems</code></td><td>Lister toutes les taches</td><td><span class="tag tag-user">user ou admin</span></td></tr>
+    <tr><td><span class="tag tag-get">GET</span></td><td><code>/api/todoitems/{id}</code></td><td>Recuperer une tache par ID</td><td><span class="tag tag-user">user ou admin</span></td></tr>
+    <tr><td><span class="tag tag-post">POST</span></td><td><code>/api/todoitems</code></td><td>Creer une tache</td><td><span class="tag tag-admin">admin</span></td></tr>
+    <tr><td><span class="tag tag-put">PUT</span></td><td><code>/api/todoitems/{id}</code></td><td>Modifier une tache</td><td><span class="tag tag-admin">admin</span></td></tr>
+    <tr><td><span class="tag tag-delete">DELETE</span></td><td><code>/api/todoitems/{id}</code></td><td>Supprimer une tache</td><td><span class="tag tag-admin">admin</span></td></tr>
+  </tbody>
+</table>
+
+<h3>Health Checks (sans token)</h3>
+<table>
+  <thead><tr><th>Methode</th><th>Endpoint</th><th>Description</th></tr></thead>
+  <tbody>
+    <tr><td><span class="tag tag-get">GET</span></td><td><code>/health</code></td><td>Verification basique (toujours 200 OK)</td></tr>
+    <tr><td><span class="tag tag-get">GET</span></td><td><code>/ready</code></td><td>Verification disponibilite base de donnees</td></tr>
+  </tbody>
+</table>
+
+<h2>Systeme de roles</h2>
+
+<div class="role-box role-admin">
+  <h4>&#128308; Role <code>admin</code> &mdash; CRUD complet</h4>
+  <p>Peut lire, creer, modifier et supprimer des taches. S'inscrire avec <code>"role": "admin"</code>.</p>
+</div>
+<div class="role-box role-user">
+  <h4>&#128994; Role <code>user</code> &mdash; Lecture seule</h4>
+  <p>Peut uniquement lire les taches (GET). S'inscrire avec <code>"role": "user"</code>.</p>
+</div>
+
+<table>
+  <thead><tr><th>Action</th><th>user</th><th>admin</th></tr></thead>
+  <tbody>
+    <tr><td>Lire les taches (GET)</td><td>&#9989;</td><td>&#9989;</td></tr>
+    <tr><td>Creer une tache (POST)</td><td>&#10060; 403</td><td>&#9989;</td></tr>
+    <tr><td>Modifier une tache (PUT)</td><td>&#10060; 403</td><td>&#9989;</td></tr>
+    <tr><td>Supprimer une tache (DELETE)</td><td>&#10060; 403</td><td>&#9989;</td></tr>
+  </tbody>
+</table>
+
+<h2>Depannage</h2>
+
+<div class="callout">
+  <strong>L'app ne demarre pas &mdash; "JWT_SECRET_KEY is not configured"</strong>
+  Mode Production sans cle JWT definie. Lancer avec <code>ASPNETCORE_ENVIRONMENT=Development</code> ou definir <code>export JWT_SECRET_KEY=votre-cle-32-chars-min</code>.
+</div>
+
+<div class="callout blue">
+  <strong>401 Unauthorized</strong>
+  Header <code>Authorization</code> manquant, token expire, ou format incorrect. Format attendu : <code>Bearer &lt;token&gt;</code>. Se reconnecter via <code>/api/auth/login</code>.
+</div>
+
+<div class="callout green">
+  <strong>403 Forbidden sur creation / modification / suppression</strong>
+  Le compte a le role <code>user</code>. Creer un compte avec <code>"role": "admin"</code>.
+</div>
+
+</div>
+</body>
+</html>

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using API_web.Models;
 using API_web.Services;
 
@@ -33,16 +33,16 @@ public class AuthController : ControllerBase
     /// <returns>The created user information</returns>
     /// <remarks>
     /// Sample request:
-    /// 
+    ///
     ///     POST /api/auth/register
     ///     {
     ///        "username": "john_doe",
     ///        "password": "SecurePassword123!",
     ///        "role": "user"
     ///     }
-    /// 
+    ///
     /// Valid roles: "user" (default), "admin"
-    /// 
+    ///
     /// **Authentication Required:** No
     /// </remarks>
     /// <response code="201">User successfully registered</response>
@@ -52,36 +52,29 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<RegisterResponse>> Register(RegisterRequest request)
     {
-        // Validate input
         if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
         {
             return BadRequest(new { message = "Username and password are required" });
         }
 
-        // Check if username already exists
         var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Username == request.Username);
+            .Find(u => u.Username == request.Username)
+            .FirstOrDefaultAsync();
 
         if (existingUser != null)
         {
             return BadRequest(new { message = "Username already exists" });
         }
 
-        // Hash the password
-        var passwordHash = _passwordHasher.HashPassword(request.Password);
-
-        // Create new user
         var user = new User
         {
             Username = request.Username,
-            PasswordHash = passwordHash,
+            PasswordHash = _passwordHasher.HashPassword(request.Password),
             Role = string.IsNullOrWhiteSpace(request.Role) ? "user" : request.Role
         };
 
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
+        await _context.Users.InsertOneAsync(user);
 
-        // Return response
         var response = new RegisterResponse
         {
             Id = user.Id,
@@ -99,17 +92,13 @@ public class AuthController : ControllerBase
     /// <returns>JWT token and user information</returns>
     /// <remarks>
     /// Sample request:
-    /// 
+    ///
     ///     POST /api/auth/login
     ///     {
     ///        "username": "john_doe",
     ///        "password": "SecurePassword123!"
     ///     }
-    /// 
-    /// The returned JWT token should be included in the Authorization header for protected endpoints:
-    /// 
-    ///     Authorization: Bearer {token}
-    /// 
+    ///
     /// **Authentication Required:** No
     /// </remarks>
     /// <response code="200">Login successful, returns JWT token</response>
@@ -119,16 +108,15 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<LoginResponse>> Login(LoginRequest request)
     {
-        // Validate input
         if (string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
         {
             _logger.LogWarning("Login failed for username '{Username}': Missing credentials", request.Username ?? "(empty)");
             return Unauthorized(new { message = "Username and password are required" });
         }
 
-        // Find user by username
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Username == request.Username);
+            .Find(u => u.Username == request.Username)
+            .FirstOrDefaultAsync();
 
         if (user == null)
         {
@@ -136,28 +124,20 @@ public class AuthController : ControllerBase
             return Unauthorized(new { message = "Invalid username or password" });
         }
 
-        // Verify password
         if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
         {
             _logger.LogWarning("Login failed for username '{Username}': Invalid password", request.Username);
             return Unauthorized(new { message = "Invalid username or password" });
         }
 
-        // Generate JWT token
         var token = _jwtTokenService.GenerateToken(user);
-
-        // Log successful authentication
         _logger.LogInformation("User '{Username}' successfully authenticated at {Timestamp}", user.Username, DateTime.UtcNow);
 
-        // Return response
-        var response = new LoginResponse
+        return Ok(new LoginResponse
         {
             Token = token,
             Username = user.Username,
             Role = user.Role
-        };
-
-        return Ok(response);
+        });
     }
 }
-

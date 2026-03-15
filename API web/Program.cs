@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using API_web.Models;
 using API_web.Services;
 using API_web.Middleware;
@@ -6,6 +5,7 @@ using API_web.HealthChecks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,9 +70,11 @@ builder.Services.AddSwaggerGen(options =>
 // Add Controllers
 builder.Services.AddControllers();
 
-// Register TodoContext with dependency injection and configure InMemory database
-builder.Services.AddDbContext<TodoContext>(opt =>
-    opt.UseInMemoryDatabase("TodoList"));
+// Register MongoDB
+// En ASP.NET Core, les env vars avec __ overrident le JSON (MongoDB__ConnectionString > appsettings.json)
+var mongoConnectionString = builder.Configuration["MongoDB:ConnectionString"] ?? "mongodb://127.0.0.1:27017";
+builder.Services.AddSingleton<IMongoClient>(new MongoClient(mongoConnectionString));
+builder.Services.AddSingleton<TodoContext>();
 
 // Register password hashing service
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

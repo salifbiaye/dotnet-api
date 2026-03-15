@@ -1,19 +1,36 @@
 version: '3.8'
 
 services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
   api:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-      - "8081:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:8080;https://+:8081
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-secret-key-min-32-chars-long-change-in-production}
-      - JWT_EXPIRATION_MINUTES=${JWT_EXPIRATION_MINUTES:-60}
-      - CONNECTION_STRING=${CONNECTION_STRING:-}
-    volumes:
-      - ./API web:/app/API web:ro
-      - ~/.aspnet/https:/https:ro
+      - ASPNETCORE_URLS=http://+:8080
+      - JWT_SECRET_KEY=dev-secret-key-change-in-production-32chars!
+      - JWT_EXPIRATION_MINUTES=60
+      - MongoDB__ConnectionString=mongodb://mongodb:27017
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mongo_data:

@@ -1,17 +1,17 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using API_web.Models;
-using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace API_web.HealthChecks;
 
 public class DatabaseHealthCheck : IHealthCheck
 {
-    private readonly TodoContext _context;
+    private readonly IMongoClient _mongoClient;
     private readonly TimeSpan _timeout = TimeSpan.FromSeconds(5);
 
-    public DatabaseHealthCheck(TodoContext context)
+    public DatabaseHealthCheck(IMongoClient mongoClient)
     {
-        _context = context;
+        _mongoClient = mongoClient;
     }
 
     public async Task<HealthCheckResult> CheckHealthAsync(
@@ -24,18 +24,18 @@ public class DatabaseHealthCheck : IHealthCheck
             using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
                 cancellationToken, timeoutCts.Token);
 
-            // Try to connect to the database
-            await _context.Database.CanConnectAsync(linkedCts.Token);
+            await _mongoClient.GetDatabase("admin")
+                .RunCommandAsync<BsonDocument>(new BsonDocument("ping", 1), cancellationToken: linkedCts.Token);
 
-            return HealthCheckResult.Healthy("Database is accessible");
+            return HealthCheckResult.Healthy("MongoDB is accessible");
         }
         catch (OperationCanceledException)
         {
-            return HealthCheckResult.Unhealthy("Database connection timed out after 5 seconds");
+            return HealthCheckResult.Unhealthy("MongoDB connection timed out after 5 seconds");
         }
         catch (Exception ex)
         {
-            return HealthCheckResult.Unhealthy("Database is not accessible", ex);
+            return HealthCheckResult.Unhealthy("MongoDB is not accessible", ex);
         }
     }
 }

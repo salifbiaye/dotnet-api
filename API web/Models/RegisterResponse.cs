@@ -8,8 +8,8 @@ public class RegisterResponse
     /// <summary>
     /// The unique identifier for the created user
     /// </summary>
-    /// <example>1</example>
-    public long Id { get; set; }
+    /// <example>507f1f77bcf86cd799439011</example>
+    public string Id { get; set; } = null!;
 
     /// <summary>
     /// The username of the created user
