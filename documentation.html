@@ -16,10 +16,11 @@
   .cover h1 { font-size: 52px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
   .cover h1 span { color: #e94560; }
   .cover .subtitle { font-size: 18px; color: #a0aec0; margin-bottom: 40px; max-width: 480px; }
-  .cover .tech-stack { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 60px; }
+  .cover .tech-stack { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 40px; }
   .cover .tech { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; }
   .cover .meta { color: #718096; font-size: 13px; }
   .cover .meta strong { color: #a0aec0; }
+  .cover .github-link { margin-top: 20px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); padding: 10px 24px; border-radius: 8px; color: white; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
 
   .page { padding: 48px 56px; max-width: 900px; margin: 0 auto; }
 
@@ -27,6 +28,13 @@
   h2:first-child { margin-top: 0; }
   h3 { font-size: 15px; font-weight: 700; color: #0f3460; margin: 24px 0 10px; }
   p { margin-bottom: 12px; color: #4a5568; }
+  a { color: #0f3460; }
+
+  .repo-box { background: linear-gradient(135deg, #ebf8ff, #e6fffa); border: 1px solid #90cdf4; border-radius: 12px; padding: 20px 24px; margin: 20px 0; display: flex; align-items: center; gap: 16px; }
+  .repo-box .repo-icon { font-size: 32px; flex-shrink: 0; }
+  .repo-box .repo-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #2b6cb0; margin-bottom: 4px; }
+  .repo-box .repo-url { font-size: 14px; font-weight: 700; color: #1a1a2e; word-break: break-all; }
+  .repo-box .repo-url a { color: #2b6cb0; text-decoration: none; }
 
   .callout { border-left: 4px solid #e94560; background: #fff5f7; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; color: #2d3748; }
   .callout.green { border-color: #38a169; background: #f0fff4; }
@@ -48,7 +56,6 @@
   .tag-post { background: #bee3f8; color: #2a69ac; }
   .tag-put { background: #fefcbf; color: #744210; }
   .tag-delete { background: #fed7d7; color: #9b2c2c; }
-  .tag-none { background: #e2e8f0; color: #4a5568; }
   .tag-admin { background: #fed7d7; color: #9b2c2c; }
   .tag-user { background: #c6f6d5; color: #276749; }
 
@@ -66,10 +73,17 @@
   .role-admin { background: linear-gradient(135deg, #fff5f5, #fed7d7); border: 1px solid #feb2b2; }
   .role-user { background: linear-gradient(135deg, #f0fff4, #c6f6d5); border: 1px solid #9ae6b4; }
 
+  .proof-section { page-break-before: always; }
+  .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 24px 0; }
+  .proof-card { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .proof-card img { width: 100%; display: block; }
+  .proof-card .proof-label { background: #1a1a2e; color: white; padding: 10px 14px; font-size: 12px; font-weight: 600; }
+
   @media print {
     body { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
     .cover { page-break-after: always; }
     pre, table { page-break-inside: avoid; }
+    .proof-section { page-break-before: always; }
   }
 </style>
 </head>
@@ -77,85 +91,91 @@
 
 <!-- PAGE DE COUVERTURE -->
 <div class="cover">
-  <div class="badge">Projet Academique</div>
+  <div class="badge">Projet Academique &mdash; OpenClassrooms</div>
   <h1>TodoItems <span>API</span></h1>
   <p class="subtitle">API REST securisee avec authentification JWT et autorisation par roles</p>
   <div class="tech-stack">
     <span class="tech">ASP.NET Core 9.0</span>
     <span class="tech">JWT Auth</span>
+    <span class="tech">MongoDB</span>
     <span class="tech">Swagger / OpenAPI</span>
     <span class="tech">Docker</span>
-    <span class="tech">In-Memory DB</span>
   </div>
-  <div class="meta"><strong>Documentation technique</strong><br>Mars 2026</div>
+  <a class="github-link" href="https://github.com/salifbiaye/dotnet-api">
+    &#128279; github.com/salifbiaye/dotnet-api
+  </a>
+  <div class="meta" style="margin-top:20px"><strong>Salif &mdash; Documentation technique</strong><br>Mars 2026</div>
 </div>
 
 <!-- CONTENU -->
 <div class="page">
 
+<h2>Depot GitHub</h2>
+<div class="repo-box">
+  <div class="repo-icon">&#128279;</div>
+  <div>
+    <div class="repo-label">Repository public</div>
+    <div class="repo-url"><a href="https://github.com/salifbiaye/dotnet-api">https://github.com/salifbiaye/dotnet-api</a></div>
+    <p style="margin:6px 0 0; font-size:12px; color:#4a5568;">Code source complet incluant Dockerfile et docker-compose.yml</p>
+  </div>
+</div>
 <h2>Presentation du projet</h2>
-<p>TodoItems API est une API REST developpee avec <strong>ASP.NET Core 9.0</strong>. Elle permet la gestion de taches (todo items) avec authentification <strong>JWT</strong> et autorisation par roles (<code>admin</code> / <code>user</code>).</p>
+<p>TodoItems API est une API REST developpee avec <strong>ASP.NET Core 9.0</strong>. Elle permet la gestion de taches avec authentification <strong>JWT</strong>, autorisation par roles, et persistance des donnees dans <strong>MongoDB</strong>.</p>
 
 <div class="grid2">
   <div class="card"><div class="icon">&#128274;</div><h4>Authentification JWT</h4><p>Inscription, connexion et tokens signes avec expiration configurable.</p></div>
   <div class="card"><div class="icon">&#128101;</div><h4>Autorisation par roles</h4><p>Deux roles : <code>admin</code> (CRUD complet) et <code>user</code> (lecture seule).</p></div>
   <div class="card"><div class="icon">&#128196;</div><h4>Swagger / OpenAPI</h4><p>Interface interactive pour tester tous les endpoints depuis le navigateur.</p></div>
-  <div class="card"><div class="icon">&#128051;</div><h4>Support Docker</h4><p>Build multi-stage optimise, Docker Compose inclus pour un deploiement rapide.</p></div>
+  <div class="card"><div class="icon">&#128051;</div><h4>Docker + MongoDB</h4><p>Une seule commande lance l'API et la base de donnees ensemble.</p></div>
 </div>
 
-<h2>Lancer le projet</h2>
+<h2>Instructions pour lancer le projet</h2>
 
-<h3>Option 1 &mdash; En local (le plus simple)</h3>
+<h3>&#128051; Via Docker &mdash; Recommande (2 commandes seulement)</h3>
 <div class="callout green">
   <strong>Aucune configuration requise</strong>
-  Le secret JWT de developpement est pre-configure dans <code>appsettings.Development.json</code>.
-  L'application fonctionne immediatement apres clonage.
+  Le JWT_SECRET_KEY et la connexion MongoDB sont deja configures dans le docker-compose.yml.
+  Aucun fichier .env a creer.
 </div>
 
-<div class="step"><div class="step-num">1</div><div class="step-content"><strong>Cloner le depot</strong><pre>git clone &lt;url-du-repo&gt;</pre></div></div>
-<div class="step"><div class="step-num">2</div><div class="step-content"><strong>Lancer l'API</strong><pre>cd "API web"
-dotnet run</pre></div></div>
-<div class="step"><div class="step-num">3</div><div class="step-content"><strong>Ouvrir Swagger</strong><pre>http://localhost:5284/swagger</pre></div></div>
+<div class="step"><div class="step-num">1</div><div class="step-content"><strong>Cloner le depot</strong><pre>git clone https://github.com/salifbiaye/dotnet-api
+cd dotnet-api</pre></div></div>
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-content">
+    <strong>Lancer l'API + MongoDB</strong>
+    <pre>docker-compose up -d</pre>
+    Docker telecharge MongoDB, construit l'API, et demarre tout automatiquement.<br>
+    MongoDB est pret avant que l'API demarre (healthcheck configure).
+  </div>
+</div>
+<div class="step"><div class="step-num">3</div><div class="step-content"><strong>Ouvrir Swagger</strong><pre>http://localhost:8080/swagger</pre></div></div>
 
-<h3>Option 2 &mdash; Via Docker</h3>
 <div class="callout blue">
-  <strong>Seule etape manuelle</strong>
-  Creer le fichier <code>.env</code> depuis <code>.env.example</code> et y definir <code>JWT_SECRET_KEY</code>.
+  <strong>Pour arreter</strong>
+  <code>docker-compose down</code> &mdash; Les donnees MongoDB persistent dans un volume Docker.
 </div>
 
-<div class="step"><div class="step-num">1</div><div class="step-content"><strong>Cloner le depot et creer le fichier d'environnement</strong><pre>git clone &lt;url-du-repo&gt;
-cp .env.example .env</pre></div></div>
-<div class="step"><div class="step-num">2</div><div class="step-content"><strong>Ouvrir <code>.env</code> et definir la cle secrete (min. 32 caracteres)</strong><pre>JWT_SECRET_KEY=mon-secret-securise-minimum-32-caracteres
-JWT_EXPIRATION_MINUTES=60
-ASPNETCORE_ENVIRONMENT=Development</pre></div></div>
-<div class="step"><div class="step-num">3</div><div class="step-content"><strong>Lancer via Docker Compose</strong><pre>docker-compose up --build</pre></div></div>
-<div class="step"><div class="step-num">4</div><div class="step-content"><strong>Ouvrir Swagger</strong><pre>http://localhost:8080/swagger</pre></div></div>
+<h3>&#128187; En local avec dotnet run</h3>
+<p><strong>Prerequis :</strong> .NET 9.0 SDK + MongoDB accessible sur <code>127.0.0.1:27017</code> (via Docker : <code>docker run -d -p 27017:27017 mongo:7</code>)</p>
+
+<div class="step"><div class="step-num">1</div><div class="step-content"><strong>Cloner et lancer</strong><pre>git clone https://github.com/salifbiaye/dotnet-api
+cd "dotnet-api/API web"
+dotnet run</pre></div></div>
+<div class="step"><div class="step-num">2</div><div class="step-content"><strong>Swagger disponible sur</strong><pre>http://localhost:5284/swagger</pre></div></div>
 
 <h3>Recapitulatif des ports</h3>
 <table>
-  <thead><tr><th>Mode</th><th>HTTP</th><th>HTTPS</th><th>Swagger</th></tr></thead>
+  <thead><tr><th>Mode</th><th>API</th><th>Swagger</th><th>MongoDB</th></tr></thead>
   <tbody>
-    <tr><td><strong>Local</strong></td><td><code>localhost:5284</code></td><td><code>localhost:7250</code></td><td><code>localhost:5284/swagger</code></td></tr>
-    <tr><td><strong>Docker</strong></td><td><code>localhost:8080</code></td><td><code>localhost:8081</code></td><td><code>localhost:8080/swagger</code></td></tr>
-  </tbody>
-</table>
-
-<h2>Variables d'environnement</h2>
-<p>Copier <code>.env.example</code> vers <code>.env</code> (requis pour Docker uniquement).</p>
-<table>
-  <thead><tr><th>Variable</th><th>Obligatoire</th><th>Defaut</th><th>Description</th></tr></thead>
-  <tbody>
-    <tr><td><code>JWT_SECRET_KEY</code></td><td><strong>Oui (Docker)</strong></td><td>Secret dev inclus en local</td><td>Cle de signature des tokens JWT (min. 32 caracteres)</td></tr>
-    <tr><td><code>JWT_EXPIRATION_MINUTES</code></td><td>Non</td><td>60</td><td>Duree de validite du token en minutes</td></tr>
-    <tr><td><code>ASPNETCORE_ENVIRONMENT</code></td><td>Non</td><td>Production</td><td>Environnement applicatif</td></tr>
-    <tr><td><code>CORS_ALLOWED_ORIGINS</code></td><td>Non</td><td>localhost:3000, 5173</td><td>Origines autorisees pour les requetes CORS</td></tr>
-    <tr><td><code>CONNECTION_STRING</code></td><td>Non</td><td>InMemory</td><td>Chaine de connexion base de donnees</td></tr>
+    <tr><td><strong>Docker (recommande)</strong></td><td><code>localhost:8080</code></td><td><code>localhost:8080/swagger</code></td><td>Interne au reseau Docker</td></tr>
+    <tr><td><strong>Local (dotnet run)</strong></td><td><code>localhost:5284</code></td><td><code>localhost:5284/swagger</code></td><td><code>localhost:27017</code></td></tr>
   </tbody>
 </table>
 
 <h2>Tester l'API (pas a pas via Swagger)</h2>
 
-<div class="step"><div class="step-num">1</div><div class="step-content">Ouvrir <code>http://localhost:5284/swagger</code></div></div>
+<div class="step"><div class="step-num">1</div><div class="step-content">Ouvrir <code>http://localhost:8080/swagger</code></div></div>
 <div class="step">
   <div class="step-num">2</div>
   <div class="step-content">
@@ -178,8 +198,8 @@ ASPNETCORE_ENVIRONMENT=Development</pre></div></div>
 }</pre>
   </div>
 </div>
-<div class="step"><div class="step-num">4</div><div class="step-content"><strong>S'authentifier</strong> &mdash; cliquer sur le bouton <strong>Authorize</strong> (icone cadenas en haut a droite), coller le token, valider</div></div>
-<div class="step"><div class="step-num">5</div><div class="step-content"><strong>Tester les endpoints</strong> &mdash; GET, POST, PUT, DELETE tous disponibles selon le role</div></div>
+<div class="step"><div class="step-num">4</div><div class="step-content"><strong>S'authentifier</strong> &mdash; cliquer sur <strong>Authorize</strong> (icone cadenas), coller le token, valider</div></div>
+<div class="step"><div class="step-num">5</div><div class="step-content"><strong>Tester les endpoints</strong> &mdash; GET, POST, PUT, DELETE selon le role</div></div>
 
 <h2>Reference API</h2>
 
@@ -209,7 +229,7 @@ ASPNETCORE_ENVIRONMENT=Development</pre></div></div>
   <thead><tr><th>Methode</th><th>Endpoint</th><th>Description</th></tr></thead>
   <tbody>
     <tr><td><span class="tag tag-get">GET</span></td><td><code>/health</code></td><td>Verification basique (toujours 200 OK)</td></tr>
-    <tr><td><span class="tag tag-get">GET</span></td><td><code>/ready</code></td><td>Verification disponibilite base de donnees</td></tr>
+    <tr><td><span class="tag tag-get">GET</span></td><td><code>/ready</code></td><td>Verification disponibilite MongoDB</td></tr>
   </tbody>
 </table>
 
@@ -234,21 +254,21 @@ ASPNETCORE_ENVIRONMENT=Development</pre></div></div>
   </tbody>
 </table>
 
-<h2>Depannage</h2>
+<!-- PREUVE DE REUSSITE -->
+<div class="proof-section">
+<h2>Preuve de reussite du cours</h2>
+<p>Cours <strong>"Securisez votre application .NET"</strong> sur OpenClassrooms &mdash; complete a 100% (3/3 objectifs pedagogiques).</p>
 
-<div class="callout">
-  <strong>L'app ne demarre pas &mdash; "JWT_SECRET_KEY is not configured"</strong>
-  Mode Production sans cle JWT definie. Lancer avec <code>ASPNETCORE_ENVIRONMENT=Development</code> ou definir <code>export JWT_SECRET_KEY=votre-cle-32-chars-min</code>.
+<div class="proof-grid">
+  <div class="proof-card">
+    <img src="API web/images/open-classroom.jpeg" alt="Progression 100% sur OpenClassrooms" />
+    <div class="proof-label">&#9989; Progression 100% &mdash; Objectifs 3/3</div>
+  </div>
+  <div class="proof-card">
+    <img src="API web/images/mail-preuve.jpeg" alt="Email de confirmation de reussite" />
+    <div class="proof-label">&#9993; Email de confirmation OpenClassrooms</div>
+  </div>
 </div>
-
-<div class="callout blue">
-  <strong>401 Unauthorized</strong>
-  Header <code>Authorization</code> manquant, token expire, ou format incorrect. Format attendu : <code>Bearer &lt;token&gt;</code>. Se reconnecter via <code>/api/auth/login</code>.
-</div>
-
-<div class="callout green">
-  <strong>403 Forbidden sur creation / modification / suppression</strong>
-  Le compte a le role <code>user</code>. Creer un compte avec <code>"role": "admin"</code>.
 </div>
 
 </div>
