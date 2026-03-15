@@ -2,6 +2,16 @@
 
 API REST sécurisée en ASP.NET Core 9.0 pour la gestion de tâches, avec authentification JWT et autorisation par rôles.
 
+## Preuve de réussite du cours
+
+Cours **"Sécurisez votre application .NET"** sur OpenClassrooms — complété à 100% (3/3 objectifs pédagogiques).
+
+> **Note pour le correcteur :** OpenClassrooms utilise une authentification sans mot de passe (connexion par lien envoyé par email uniquement). Il n'est donc pas possible de partager un accès direct au compte. L'email de confirmation reçu ainsi que la capture de la progression à 100% constituent la preuve de réussite du cours.
+
+![Progression 100% sur OpenClassrooms](API%20web/images/open-classroom.jpeg)
+
+![Email de confirmation OpenClassrooms](API%20web/images/mail-preuve.jpeg)
+
 ---
 
 ## Démarrage rapide (local — 2 commandes)
